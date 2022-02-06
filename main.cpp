@@ -6,11 +6,12 @@
 uint32_t xyHash(int x, int y) {
     uint32_t xi = static_cast<uint32_t>(x);
     uint32_t yi = static_cast<uint32_t>(y);
-    uint32_t h = x * 0x3582cb57 + y + 2147483648;
-    for (int i = 0; i < 12; i++) {
-        h *= 0x1d9a566b;
-        h = h << 16 | h >> 16;
-    }
+    const uint32_t multiplier = 0x1d9a566b;
+    uint32_t h = x * 0x3582cb57 + y + multiplier;
+    h *= multiplier;
+    h = h ^ (h >> 13) ^ (h << 17);
+    h *= multiplier;
+    h = h ^ (h >> 13) ^ (h << 17);
     return h;
 }
 
